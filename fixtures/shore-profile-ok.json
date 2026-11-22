@@ -1,0 +1,1 @@
+{"id":"shore-source-1","kind":"shore_profile","profile_id":"SP1","plot_id":"P1","captured_at":"2026-04-02T09:00:00Z","device":"sonar-1","water_level_cm":25,"points":[{"distance_m":0,"elevation_cm":12},{"distance_m":10,"elevation_cm":8},{"distance_m":20,"elevation_cm":5}]}
