@@ -1,0 +1,1 @@
+{"id":"logger-1","kind":"salinity_logger","samples":[{"station":"S1","at":"2026-04-03T08:00:00Z","conductivity":80,"tide":"flood"},{"station":"S1","at":"2026-04-03T08:05:00Z","conductivity":120,"tide":"ebb"}]}
