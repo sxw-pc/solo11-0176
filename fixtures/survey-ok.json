@@ -1,1 +1,1 @@
-{"id":"s1","kind":"survey","survey_id":"S1","plot_id":"P1","season":"spring","observer":"eco-b","high_alive":80,"mid_alive":80,"low_alive":80}
+{"id":"s1","kind":"survey","survey_id":"S1","plot_id":"P1","season":"spring","observer":"eco-b","high_alive":80,"mid_alive":80,"low_alive":80,"at":"2026-04-03T10:00:00Z","sample_coords":{"high":"A","mid":"B","low":"C"}}

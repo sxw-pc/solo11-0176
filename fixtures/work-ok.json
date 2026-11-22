@@ -1,1 +1,1 @@
-{"id":"w1","kind":"work","event_id":"W1","contract_id":"C1","event_type":"install","area":60,"at":"2026-04-01T10:00:00Z"}
+{"id":"w1","kind":"work","event_id":"W1","contract_id":"C1","event_type":"install","area":60,"at":"2026-04-01T10:00:00Z","material_id":"M1","cells":[{"id":"C-H","tier":"high","area":20},{"id":"C-M","tier":"mid","area":20},{"id":"C-L","tier":"low","area":20}]}
