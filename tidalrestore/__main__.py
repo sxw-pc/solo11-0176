@@ -6,9 +6,10 @@ from .survey import import_survey
 from .material import import_material
 from .store import report
 from .audit import audit
+from .edna import import_sample as import_edna
 def main():
     p=argparse.ArgumentParser();s=p.add_subparsers(dest='cmd',required=True)
-    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey}
+    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey,'edna-import':import_edna}
     for name in funcs:
         x=s.add_parser(name);x.add_argument('--db',required=True);x.add_argument('--file',required=True)
     x=s.add_parser('report');x.add_argument('--db',required=True)
