@@ -6,9 +6,10 @@ from .survey import import_survey
 from .material import import_material
 from .store import report
 from .audit import audit
+from .carbon import import_flux
 def main():
     p=argparse.ArgumentParser();s=p.add_subparsers(dest='cmd',required=True)
-    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey}
+    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey,'flux-import':import_flux}
     for name in funcs:
         x=s.add_parser(name);x.add_argument('--db',required=True);x.add_argument('--file',required=True)
     x=s.add_parser('report');x.add_argument('--db',required=True)
