@@ -5,3 +5,9 @@ build/
 *.egg-info/
 *.sqlite
 .venv/
+venv/
+node_modules/
+.coverage
+.benchmarks/
+.env
+dist/
