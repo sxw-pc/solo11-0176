@@ -16,6 +16,13 @@ CREATE TABLE IF NOT EXISTS survey(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFE
 CREATE TABLE IF NOT EXISTS acceptance(plot_id TEXT PRIMARY KEY,status TEXT NOT NULL,weighted_survival INTEGER NOT NULL,reason TEXT NOT NULL,version INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS acceptance_history(plot_id TEXT NOT NULL,version INTEGER NOT NULL,status TEXT NOT NULL,score INTEGER NOT NULL,reason TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(plot_id,version));
 CREATE TABLE IF NOT EXISTS decision_log(id INTEGER PRIMARY KEY,object_id TEXT NOT NULL,status TEXT NOT NULL,reason TEXT NOT NULL,evidence_id TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS tender_capture(tender_id TEXT PRIMARY KEY,deadline TEXT NOT NULL,expected_pages INTEGER NOT NULL,demand_json TEXT NOT NULL,closed INTEGER NOT NULL,closure_reason TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS tender_page(tender_id TEXT NOT NULL,page_no INTEGER NOT NULL,snapshot_no INTEGER NOT NULL,fetched_at TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(tender_id,page_no,snapshot_no));
+CREATE TABLE IF NOT EXISTS tender_bid(bid_id TEXT NOT NULL,version INTEGER NOT NULL,tender_id TEXT NOT NULL,supplier_id TEXT NOT NULL,nursery_id TEXT NOT NULL,species TEXT NOT NULL,origin TEXT NOT NULL,plots_json TEXT NOT NULL,package_id TEXT NOT NULL,is_bundle INTEGER NOT NULL,price INTEGER NOT NULL,tide_window_start TEXT NOT NULL,tide_window_end TEXT NOT NULL,truck_id TEXT,cold_chain TEXT NOT NULL,provenance_doc TEXT NOT NULL,withdrawn INTEGER NOT NULL,eligible INTEGER NOT NULL,reject_reason TEXT,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(bid_id,version));
+CREATE TABLE IF NOT EXISTS tender_award(award_id TEXT PRIMARY KEY,tender_id TEXT NOT NULL,rule TEXT NOT NULL,status TEXT NOT NULL,total_price INTEGER NOT NULL,version INTEGER NOT NULL,residual INTEGER NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS tender_award_item(award_id TEXT NOT NULL,package_id TEXT NOT NULL,bid_id TEXT NOT NULL,version INTEGER NOT NULL,supplier_id TEXT NOT NULL,nursery_id TEXT NOT NULL,plot_id TEXT NOT NULL,quantity INTEGER NOT NULL,package_price INTEGER NOT NULL,truck_id TEXT,tide_window_start TEXT,tide_window_end TEXT,delivery_commitment TEXT NOT NULL,liability_json TEXT NOT NULL,status TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(award_id,package_id,plot_id));
+CREATE TABLE IF NOT EXISTS tender_gap(gap_id TEXT PRIMARY KEY,tender_id TEXT NOT NULL,award_id TEXT,plot_id TEXT NOT NULL,quantity INTEGER NOT NULL,reason TEXT NOT NULL,status TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS material_arrival(batch_id TEXT PRIMARY KEY,award_id TEXT,package_id TEXT,species TEXT NOT NULL,origin TEXT NOT NULL,quantity INTEGER NOT NULL,matched INTEGER NOT NULL,mismatch_reason TEXT,source_id TEXT NOT NULL REFERENCES evidence(id));
 '''
 
 def connect(path):
@@ -44,4 +51,11 @@ def report(path):
           'work_cells':'SELECT * FROM work_cell ORDER BY id',
           'surveys':'SELECT * FROM survey ORDER BY id','acceptance':'SELECT * FROM acceptance ORDER BY plot_id',
           'acceptance_history':'SELECT * FROM acceptance_history ORDER BY plot_id,version',
+          'tender_captures':'SELECT * FROM tender_capture ORDER BY tender_id',
+          'tender_pages':'SELECT * FROM tender_page ORDER BY tender_id,page_no,snapshot_no',
+          'tender_bids':'SELECT * FROM tender_bid ORDER BY bid_id,version',
+          'tender_awards':'SELECT * FROM tender_award ORDER BY award_id,version',
+          'tender_award_items':'SELECT * FROM tender_award_item ORDER BY award_id,package_id,plot_id',
+          'tender_gaps':'SELECT * FROM tender_gap ORDER BY gap_id',
+          'material_arrivals':'SELECT * FROM material_arrival ORDER BY batch_id',
           'decisions':'SELECT * FROM decision_log ORDER BY id'}.items()}

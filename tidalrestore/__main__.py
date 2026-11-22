@@ -4,11 +4,14 @@ from .baseline import import_baseline
 from .works import import_contract,import_work
 from .survey import import_survey
 from .material import import_material
+from .tender import import_tender_bundle,import_tender_award,import_tender_withdrawal,reopen_gap_award
 from .store import report
 from .audit import audit
 def main():
     p=argparse.ArgumentParser();s=p.add_subparsers(dest='cmd',required=True)
-    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey}
+    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey,
+           'tender-capture':import_tender_bundle,'tender-award':import_tender_award,
+           'tender-withdrawal':import_tender_withdrawal,'tender-reopen':reopen_gap_award}
     for name in funcs:
         x=s.add_parser(name);x.add_argument('--db',required=True);x.add_argument('--file',required=True)
     x=s.add_parser('report');x.add_argument('--db',required=True)

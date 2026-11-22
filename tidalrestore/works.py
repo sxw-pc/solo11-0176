@@ -13,6 +13,17 @@ def import_contract(path,file):
         if doc['repair_start']>=doc['repair_end'] or doc['repair_start']<=doc['window_end']:
             raise ValueError('repair_window_invalid')
         if doc['species'] not in ('native-grass','native-shell'):raise ValueError('non_native_material')
+        if doc.get('award_id'):
+            # An executable work contract may reference an awarded package; the
+            # awarded item must be active, cover this plot and match species.
+            item=db.execute('SELECT * FROM tender_award_item WHERE award_id=? AND package_id=? AND plot_id=?',
+                            (doc['award_id'],doc.get('package_id',''),doc['plot_id'])).fetchone()
+            if not item:raise ValueError('unknown_awarded_package')
+            if item['status']!='active':raise ValueError('awarded_package_not_active')
+            bid=db.execute('SELECT species FROM tender_bid WHERE bid_id=? AND version=?',
+                           (item['bid_id'],item['version'])).fetchone()
+            if bid['species']!=doc['species']:raise ValueError('award_species_mismatch')
+            if doc['planned_area']>item['quantity']:raise ValueError('award_quantity_exceeded')
         db.execute('INSERT INTO work_contract VALUES(?,?,?,?,?,?,?,?,?)',(doc['contract_id'],doc['plot_id'],doc['species'],doc['planned_area'],doc['window_start'],doc['window_end'],doc['repair_start'],doc['repair_end'],doc['contractor']))
         log(db,doc['contract_id'],'signed','native_material_and_area',doc['id'])
         return {'contract_id':doc['contract_id'],'status':'signed'}

@@ -1,0 +1,157 @@
+{
+  "id": "tb1",
+  "kind": "tender_bundle",
+  "tender_id": "T1",
+  "deadline": "2026-02-20T17:00:00Z",
+  "captured_at": "2026-02-20T18:00:00Z",
+  "expected_pages": 3,
+  "demand": [
+    {"plot_id": "P1", "quantity": 60},
+    {"plot_id": "P2", "quantity": 40}
+  ],
+  "pages": [
+    {
+      "page_no": 3,
+      "snapshot_no": 1,
+      "fetched_at": "2026-02-20T17:40:00Z",
+      "bids": [
+        {
+          "bid_id": "BID-B",
+          "supplier_id": "supplier-b",
+          "nursery_id": "nursery-b",
+          "species": "native-grass",
+          "origin": "local",
+          "versions": [
+            {
+              "version": 1,
+              "package_id": "PKG-B-P1",
+              "is_bundle": false,
+              "price": 500,
+              "plots": [{"plot_id": "P1", "quantity": 60}],
+              "tide_window_start": "2026-04-01T08:00:00Z",
+              "tide_window_end": "2026-04-01T12:00:00Z",
+              "truck_id": "truck-b1",
+              "cold_chain": "reefer",
+              "provenance_doc": "prov-b-1"
+            }
+          ]
+        },
+        {
+          "bid_id": "BID-F",
+          "supplier_id": "supplier-f",
+          "nursery_id": "nursery-f",
+          "species": "foreign-grass",
+          "origin": "overseas",
+          "versions": [
+            {
+              "version": 1,
+              "package_id": "PKG-F-P1",
+              "is_bundle": false,
+              "price": 400,
+              "plots": [{"plot_id": "P1", "quantity": 60}],
+              "tide_window_start": "2026-04-01T08:00:00Z",
+              "tide_window_end": "2026-04-01T12:00:00Z",
+              "truck_id": "truck-f1",
+              "cold_chain": "reefer",
+              "provenance_doc": "prov-f-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_no": 1,
+      "snapshot_no": 1,
+      "fetched_at": "2026-02-20T17:20:00Z",
+      "bids": [
+        {
+          "bid_id": "BID-A",
+          "supplier_id": "supplier-a",
+          "nursery_id": "nursery-a",
+          "species": "native-grass",
+          "origin": "local",
+          "versions": [
+            {
+              "version": 1,
+              "package_id": "PKG-A-BUNDLE",
+              "is_bundle": true,
+              "price": 700,
+              "plots": [
+                {"plot_id": "P1", "quantity": 60},
+                {"plot_id": "P2", "quantity": 40}
+              ],
+              "tide_window_start": "2026-04-01T08:00:00Z",
+              "tide_window_end": "2026-04-01T12:00:00Z",
+              "truck_id": "truck-a1",
+              "cold_chain": "reefer",
+              "provenance_doc": "prov-a-1"
+            }
+          ]
+        },
+        {
+          "bid_id": "BID-D",
+          "supplier_id": "supplier-d",
+          "nursery_id": "nursery-d",
+          "species": "native-grass",
+          "origin": "local",
+          "versions": [
+            {
+              "version": 1,
+              "package_id": "PKG-D-P2",
+              "is_bundle": false,
+              "price": 260,
+              "plots": [{"plot_id": "P2", "quantity": 40}],
+              "tide_window_start": "2026-04-01T08:00:00Z",
+              "tide_window_end": "2026-04-01T12:00:00Z",
+              "truck_id": "truck-d1",
+              "cold_chain": "reefer",
+              "provenance_doc": "prov-d-1",
+              "withdrawn": true
+            },
+            {
+              "version": 2,
+              "package_id": "PKG-D-P2",
+              "is_bundle": false,
+              "price": 260,
+              "plots": [{"plot_id": "P2", "quantity": 40}],
+              "tide_window_start": "2026-04-01T08:00:00Z",
+              "tide_window_end": "2026-04-01T12:00:00Z",
+              "truck_id": "truck-d1",
+              "cold_chain": "reefer",
+              "provenance_doc": "prov-d-1",
+              "withdrawn": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page_no": 2,
+      "snapshot_no": 1,
+      "fetched_at": "2026-02-20T17:30:00Z",
+      "bids": [
+        {
+          "bid_id": "BID-C",
+          "supplier_id": "supplier-c",
+          "nursery_id": "nursery-c",
+          "species": "native-grass",
+          "origin": "local",
+          "versions": [
+            {
+              "version": 1,
+              "package_id": "PKG-C-P2",
+              "is_bundle": false,
+              "price": 300,
+              "plots": [{"plot_id": "P2", "quantity": 40}],
+              "tide_window_start": "2026-04-01T08:00:00Z",
+              "tide_window_end": "2026-04-01T12:00:00Z",
+              "truck_id": "truck-c1",
+              "cold_chain": "reefer",
+              "provenance_doc": "prov-c-1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
