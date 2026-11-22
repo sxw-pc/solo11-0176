@@ -39,6 +39,8 @@ def import_work(path,file):
                 installed=db.execute("SELECT COALESCE(SUM(area),0) FROM work_cell WHERE contract_id=?",(doc['contract_id'],)).fetchone()[0]
                 if installed+doc['area']>contract['planned_area']:raise ValueError('installed_area_exceeded')
                 for cell in cells:
+                    if db.execute('SELECT 1 FROM work_cell WHERE id=?',(cell['id'],)).fetchone():
+                        raise ValueError('work_cell_overlap')
                     db.execute('INSERT INTO work_cell VALUES(?,?,?,?,?,?,?)',
                                (cell['id'],doc['contract_id'],cell['tier'],cell['area'],doc['material_id'],'active',doc['id']))
             else:

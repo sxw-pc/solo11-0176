@@ -105,6 +105,17 @@ def test_cell_overlap_and_storm_damage_weighted_rework_then_replant(tmp_path):
     assert [x['status'] for x in report(db)['acceptance_history']]==['accepted','rework','rework','accepted']
     assert audit(db)['status']=='matched'
 
+def test_same_cell_cannot_be_counted_twice(tmp_path):
+    db=setup(tmp_path)
+    first=work(area=20,cells=[dict(id='C-H',tier='high',area=20)])
+    import_work(db,file(tmp_path,'first.json',first))
+    duplicate=work(id='w2',event_id='W2',area=20,
+                   cells=[dict(id='C-H',tier='high',area=20)])
+    with pytest.raises(ValueError,match='work_cell_overlap'):
+        import_work(db,file(tmp_path,'duplicate.json',duplicate))
+    assert len(report(db)['work_cells'])==1
+    assert audit(db)['status']=='matched'
+
 def test_late_independent_survey_retracts_earlier_acceptance(tmp_path):
     db=setup(tmp_path);import_work(db,file(tmp_path,'work.json',work()))
     import_survey(db,file(tmp_path,'first.json',survey()))
