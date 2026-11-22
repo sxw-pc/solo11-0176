@@ -17,6 +17,12 @@ CREATE TABLE IF NOT EXISTS acceptance(plot_id TEXT PRIMARY KEY,status TEXT NOT N
 CREATE TABLE IF NOT EXISTS acceptance_history(plot_id TEXT NOT NULL,version INTEGER NOT NULL,status TEXT NOT NULL,score INTEGER NOT NULL,reason TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(plot_id,version));
 CREATE TABLE IF NOT EXISTS decision_log(id INTEGER PRIMARY KEY,object_id TEXT NOT NULL,status TEXT NOT NULL,reason TEXT NOT NULL,evidence_id TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS debris_observation(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFERENCES plot(id),camera TEXT NOT NULL,observed_at TEXT NOT NULL,position_m INTEGER NOT NULL,shape TEXT NOT NULL,pieces INTEGER NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS debris_track(id TEXT PRIMARY KEY,doc TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS debris_hypothesis(id TEXT PRIMARY KEY,track_id TEXT NOT NULL,status TEXT NOT NULL,doc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS debris_plan(plan_id TEXT NOT NULL,route_id TEXT NOT NULL,doc TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(plan_id,route_id));
+CREATE TABLE IF NOT EXISTS debris_bag(id TEXT PRIMARY KEY,track_id TEXT NOT NULL,boat TEXT,sealed_at TEXT,position_m INTEGER,pieces INTEGER NOT NULL,claims TEXT,status TEXT NOT NULL,receipt_id TEXT,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS debris_handover(id TEXT PRIMARY KEY,track_id TEXT NOT NULL,sack_id TEXT NOT NULL,at TEXT NOT NULL,total_pieces INTEGER NOT NULL,weight_kg REAL NOT NULL,bags TEXT NOT NULL,status TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS debris_ledger(track_id TEXT NOT NULL,category TEXT NOT NULL,obs_id TEXT,bag_id TEXT,boat TEXT,receipt_id TEXT,pieces INTEGER NOT NULL);
 '''
 
 def connect(path):
@@ -38,7 +44,7 @@ def log(db,key,status,reason,eid):
 
 def report(path):
     with closing(connect(path)) as db:
-        return {k:[dict(r) for r in db.execute(sql)] for k,sql in {
+        data={k:[dict(r) for r in db.execute(sql)] for k,sql in {
           'plots':'SELECT * FROM plot ORDER BY id','baseline':'SELECT * FROM baseline_transect ORDER BY id',
           'baseline_disputes':'SELECT * FROM baseline_dispute ORDER BY id','materials':'SELECT * FROM material_batch ORDER BY id',
           'contracts':'SELECT * FROM work_contract ORDER BY id','works':'SELECT * FROM work_event ORDER BY id',
@@ -46,4 +52,17 @@ def report(path):
           'surveys':'SELECT * FROM survey ORDER BY id','acceptance':'SELECT * FROM acceptance ORDER BY plot_id',
           'acceptance_history':'SELECT * FROM acceptance_history ORDER BY plot_id,version',
           'decisions':'SELECT * FROM decision_log ORDER BY id',
-          'debris':'SELECT * FROM debris_observation ORDER BY id'}.items()}
+          'debris':'SELECT * FROM debris_observation ORDER BY id',
+          'debris_tracks':'SELECT * FROM debris_track ORDER BY id',
+          'debris_hypotheses':'SELECT * FROM debris_hypothesis ORDER BY id',
+          'debris_plans':'SELECT * FROM debris_plan ORDER BY plan_id,route_id',
+          'debris_bags':'SELECT * FROM debris_bag ORDER BY id',
+          'debris_handovers':'SELECT * FROM debris_handover ORDER BY id',
+          'debris_ledger':'SELECT * FROM debris_ledger ORDER BY track_id,category,obs_id,bag_id'}.items()}
+    for row in data['debris_tracks']:row['doc']=json.loads(row['doc'])
+    for row in data['debris_hypotheses']:row['doc']=json.loads(row['doc'])
+    for row in data['debris_plans']:row['doc']=json.loads(row['doc'])
+    for row in data['debris_bags']:
+        if row['claims'] is not None:row['claims']=json.loads(row['claims'])
+    for row in data['debris_handovers']:row['bags']=json.loads(row['bags'])
+    return data
