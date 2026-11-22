@@ -1,5 +1,5 @@
 from contextlib import closing
-from .store import connect,evidence,log
+from .store import connect,evidence,log,update_acceptance
 
 def import_survey(path,file):
     with closing(connect(path)) as db,db:
@@ -14,20 +14,34 @@ def import_survey(path,file):
         if doc['at']<=contract['window_end']:raise ValueError('survey_before_work_end')
         latest=db.execute('SELECT MAX(observed_at) FROM survey WHERE plot_id=?',(doc['plot_id'],)).fetchone()[0]
         if latest and doc['at']<=latest:raise ValueError('survey_time_not_latest')
+        # A survey cannot be taken while the coordinate dispute is unresolved
+        # (frozen).  After a revised coordinate is adopted the plot is
+        # recheck_required: a genuinely new survey covering the adopted
+        # coordinate may then be filed, but the old decision is never reused.
+        if plot['baseline_status']=='frozen':raise ValueError('baseline_frozen')
         baseline={r['tier']:r['coordinate'] for r in db.execute('SELECT tier,coordinate FROM baseline_transect WHERE plot_id=?',(doc['plot_id'],))}
-        if doc.get('sample_coords')!=baseline:raise ValueError('survey_coverage_mismatch')
+        coords=doc.get('sample_coords') or {}
+        if coords!=baseline:raise ValueError('survey_coverage_mismatch')
         vals=[doc['high_alive'],doc['mid_alive'],doc['low_alive']]
         if any(not isinstance(x,int) or not 0<=x<=100 for x in vals):raise ValueError('invalid_survival')
-        cells=list(db.execute('SELECT tier,area,status FROM work_cell WHERE contract_id=?',(contract['id'],)))
+        cells=list(db.execute('SELECT tier,area,status,coordinate FROM work_cell WHERE contract_id=?',(contract['id'],)))
         installed=sum(x['area'] for x in cells)
         damage=sum(x['area'] for x in cells if x['status']=='damaged')
+        uncovered=sum(x['area'] for x in cells
+                      if x['status']=='active' and x['coordinate'] is not None
+                      and x['coordinate']!=coords[x['tier']])
         by_tier=dict(zip(('high','mid','low'),vals))
         score=sum(x['area']*by_tier[x['tier']] for x in cells if x['status']=='active')//max(1,contract['planned_area'])
-        status='accepted' if plot['baseline_status']=='confirmed' and installed>=contract['planned_area'] and damage==0 and score>=70 else 'rework'
-        reason='survival_and_area' if status=='accepted' else ('storm_damage' if damage else 'insufficient_survival_or_area')
-        db.execute('INSERT INTO survey VALUES(?,?,?,?,?,?,?,?,?)',(doc['survey_id'],doc['plot_id'],doc['season'],doc['observer'],*vals,doc['at'],doc['id']))
-        old=db.execute('SELECT version FROM acceptance WHERE plot_id=?',(doc['plot_id'],)).fetchone();version=(old['version']+1) if old else 1
-        db.execute('INSERT INTO acceptance VALUES(?,?,?,?,?) ON CONFLICT(plot_id) DO UPDATE SET status=excluded.status,weighted_survival=excluded.weighted_survival,reason=excluded.reason,version=excluded.version',(doc['plot_id'],status,score,reason,version))
-        db.execute('INSERT INTO acceptance_history VALUES(?,?,?,?,?,?)',(doc['plot_id'],version,status,score,reason,doc['id']))
+        accepted=(plot['baseline_status']=='confirmed' and installed>=contract['planned_area']
+                  and damage==0 and uncovered==0 and score>=70)
+        status='accepted' if accepted else 'rework'
+        reason='survival_and_area' if accepted else ('storm_damage' if damage else
+               ('work_cell_outside_sampled_coordinate' if uncovered else 'insufficient_survival_or_area'))
+        db.execute('INSERT INTO survey VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',
+                   (doc['survey_id'],doc['plot_id'],doc['season'],doc['observer'],*vals,doc['at'],doc['id'],
+                    coords['high'],coords['mid'],coords['low']))
+        version=update_acceptance(db,doc['plot_id'],status,score,reason,doc['id'])
+        if accepted and plot['baseline_status']=='recheck_required':
+            db.execute("UPDATE plot SET baseline_status='confirmed' WHERE id=?",(doc['plot_id'],))
         log(db,doc['plot_id'],status,reason,doc['id'])
         return {'plot_id':doc['plot_id'],'status':status,'weighted_survival':score,'version':version}

@@ -1,5 +1,8 @@
 from contextlib import closing
-from .store import connect,evidence,log
+from .store import connect,evidence,log,update_acceptance
+
+def current_baseline(db,plot_id):
+    return {r['tier']:r['coordinate'] for r in db.execute('SELECT tier,coordinate FROM baseline_transect WHERE plot_id=?',(plot_id,))}
 
 def import_contract(path,file):
     with closing(connect(path)) as db,db:
@@ -38,11 +41,12 @@ def import_work(path,file):
             if doc['event_type']=='install':
                 installed=db.execute("SELECT COALESCE(SUM(area),0) FROM work_cell WHERE contract_id=?",(doc['contract_id'],)).fetchone()[0]
                 if installed+doc['area']>contract['planned_area']:raise ValueError('installed_area_exceeded')
+                anchors=current_baseline(db,contract['plot_id'])
                 for cell in cells:
                     if db.execute('SELECT 1 FROM work_cell WHERE id=?',(cell['id'],)).fetchone():
                         raise ValueError('work_cell_overlap')
-                    db.execute('INSERT INTO work_cell VALUES(?,?,?,?,?,?,?)',
-                               (cell['id'],doc['contract_id'],cell['tier'],cell['area'],doc['material_id'],'active',doc['id']))
+                    db.execute('INSERT INTO work_cell VALUES(?,?,?,?,?,?,?,?)',
+                               (cell['id'],doc['contract_id'],cell['tier'],cell['area'],doc['material_id'],'active',doc['id'],anchors[cell['tier']]))
             else:
                 for cell in cells:
                     old=db.execute('SELECT * FROM work_cell WHERE id=? AND contract_id=?',(cell['id'],doc['contract_id'])).fetchone()
@@ -59,11 +63,9 @@ def import_work(path,file):
             if total!=doc['area']:raise ValueError('storm_area_mismatch')
             for cell_id in cells:db.execute("UPDATE work_cell SET status='damaged',source_id=? WHERE id=?",(doc['id'],cell_id))
         db.execute('INSERT INTO work_event VALUES(?,?,?,?,?,?)',(doc['event_id'],doc['contract_id'],doc['event_type'],doc['area'],doc['at'],doc['id']))
-        if doc['event_type']=='storm_damage':
-            db.execute("UPDATE acceptance SET status='rework',reason='storm_damage',version=version+1 WHERE plot_id=?",(contract['plot_id'],))
+        if doc['event_type']=='storm_damage' and contract['plot_id']:
             current=db.execute('SELECT * FROM acceptance WHERE plot_id=?',(contract['plot_id'],)).fetchone()
-            if current:
-                db.execute('INSERT INTO acceptance_history VALUES(?,?,?,?,?,?)',
-                           (contract['plot_id'],current['version'],'rework',current['weighted_survival'],'storm_damage',doc['id']))
+            update_acceptance(db,contract['plot_id'],'rework',current['weighted_survival'] if current else 0,
+                              'storm_damage',doc['id'],create=False)
         log(db,contract['plot_id'],doc['event_type'],'area_'+str(doc['area']),doc['id'])
         return {'event_id':doc['event_id'],'status':doc['event_type']}

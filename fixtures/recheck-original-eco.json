@@ -1,0 +1,1 @@
+{"id":"r-a-eco","kind":"recheck","plot_id":"P1","tier":"high","coordinate":"A","agency":"eco-monitor","authorization":"ecological_monitor","clock_synced":true,"tide_window":{"from":"2026-04-01T08:00:00Z","to":"2026-04-01T12:00:00Z"},"track":[{"lat":1.0,"lon":103.0,"coordinate":"A"},{"lat":1.0001,"lon":103.0001,"coordinate":"A"}],"supported_coordinate":"A"}

@@ -1,0 +1,1 @@
+{"id":"r-a-drift","kind":"recheck","plot_id":"P1","tier":"high","coordinate":"A","agency":"eco-monitor","authorization":"ecological_monitor","clock_synced":true,"tide_window":{"from":"2026-04-01T08:00:00Z","to":"2026-04-01T12:00:00Z"},"track":[{"lat":1.5,"lon":103.5,"coordinate":"D","outside_tide_window":true}],"supported_coordinate":"A"}
