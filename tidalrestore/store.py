@@ -17,7 +17,10 @@ CREATE TABLE IF NOT EXISTS acceptance(plot_id TEXT PRIMARY KEY,status TEXT NOT N
 CREATE TABLE IF NOT EXISTS acceptance_history(plot_id TEXT NOT NULL,version INTEGER NOT NULL,status TEXT NOT NULL,score INTEGER NOT NULL,reason TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(plot_id,version));
 CREATE TABLE IF NOT EXISTS decision_log(id INTEGER PRIMARY KEY,object_id TEXT NOT NULL,status TEXT NOT NULL,reason TEXT NOT NULL,evidence_id TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS edna_sample(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFERENCES plot(id),site TEXT NOT NULL,collected_at TEXT NOT NULL,batch_id TEXT NOT NULL,barcode TEXT NOT NULL,read_count INTEGER NOT NULL,blank_reads INTEGER NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
-'''
+CREATE TABLE IF NOT EXISTS edna_lane(lane_id TEXT NOT NULL,ref_version TEXT NOT NULL,version INTEGER NOT NULL,matrix_json TEXT NOT NULL,barcodes_json TEXT NOT NULL,calibration_json TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(lane_id,version));
+CREATE TABLE IF NOT EXISTS edna_lane_well(lane_id TEXT NOT NULL,version INTEGER NOT NULL,well_id TEXT NOT NULL,role TEXT NOT NULL,plot_id TEXT,site TEXT,sample_id TEXT,reads_json TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(lane_id,version,well_id));
+CREATE TABLE IF NOT EXISTS edna_lane_history(lane_id TEXT NOT NULL,version INTEGER NOT NULL,ref_version TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(lane_id,version));
+CREATE TABLE IF NOT EXISTS edna_attribution(lane_id TEXT NOT NULL,version INTEGER NOT NULL,plot_id TEXT NOT NULL,site TEXT NOT NULL,invasive_lower INTEGER NOT NULL,invasive_upper INTEGER NOT NULL,unattributed_reads INTEGER NOT NULL,local_lower_json TEXT NOT NULL,local_upper_json TEXT NOT NULL,presence_probability REAL NOT NULL,source_id TEXT NOT NULL,PRIMARY KEY(lane_id,version,plot_id));'''
 
 def connect(path):
     p=Path(path);p.parent.mkdir(parents=True,exist_ok=True)
@@ -38,7 +41,7 @@ def log(db,key,status,reason,eid):
 
 def report(path):
     with closing(connect(path)) as db:
-        return {k:[dict(r) for r in db.execute(sql)] for k,sql in {
+        out={k:[dict(r) for r in db.execute(sql)] for k,sql in {
           'plots':'SELECT * FROM plot ORDER BY id','baseline':'SELECT * FROM baseline_transect ORDER BY id',
           'baseline_disputes':'SELECT * FROM baseline_dispute ORDER BY id','materials':'SELECT * FROM material_batch ORDER BY id',
           'contracts':'SELECT * FROM work_contract ORDER BY id','works':'SELECT * FROM work_event ORDER BY id',
@@ -46,4 +49,14 @@ def report(path):
           'surveys':'SELECT * FROM survey ORDER BY id','acceptance':'SELECT * FROM acceptance ORDER BY plot_id',
           'acceptance_history':'SELECT * FROM acceptance_history ORDER BY plot_id,version',
           'decisions':'SELECT * FROM decision_log ORDER BY id',
-          'edna_samples':'SELECT * FROM edna_sample ORDER BY id'}.items()}
+          'edna_samples':'SELECT * FROM edna_sample ORDER BY id',
+          'edna_lanes':'SELECT * FROM edna_lane ORDER BY lane_id',
+          'edna_lane_wells':'SELECT * FROM edna_lane_well ORDER BY lane_id,version,well_id',
+          'edna_lane_history':'SELECT * FROM edna_lane_history ORDER BY lane_id,version',
+          'edna_attribution':'SELECT * FROM edna_attribution ORDER BY lane_id,version,plot_id'}.items()}
+    for key in ('edna_lanes','edna_lane_wells','edna_attribution'):
+        for row in out[key]:
+            for col in list(row):
+                if col.endswith('_json'):
+                    row[col]=json.loads(row[col])
+    return out

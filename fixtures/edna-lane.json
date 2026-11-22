@@ -1,0 +1,28 @@
+{
+  "id": "edna-lane-L1-v1",
+  "kind": "edna_lane",
+  "lane_id": "L1",
+  "ref_version": "refdb-2026.03",
+  "batch_id": "LIB1",
+  "cross_talk_upper": {
+    "E1": {"E1": 1000, "E2": 0, "EXB": 0, "PCB": 0, "CTL": 0},
+    "E2": {"E1": 40, "E2": 1000, "EXB": 0, "PCB": 0, "CTL": 0},
+    "EXB": {"E1": 0, "E2": 0, "EXB": 1000, "PCB": 0, "CTL": 0},
+    "PCB": {"E1": 0, "E2": 0, "EXB": 0, "PCB": 1000, "CTL": 0},
+    "CTL": {"E1": 10, "E2": 10, "EXB": 0, "PCB": 0, "CTL": 1000}
+  },
+  "barcodes": [
+    {"code": "BIRD-A", "identity": "invasive", "label": "invasive shorebird"},
+    {"code": "BIRD-AMB", "identity": "ambiguous", "candidates": ["BIRD-A", "BIRD-N"], "label": "invasive or native congener, indistinguishable"},
+    {"code": "CTL-B", "identity": "control", "label": "positive control amplicon"}
+  ],
+  "wells": [
+    {"well_id": "E1", "role": "sample", "plot_id": "P1", "site": "P1-high", "sample_id": "E1",
+     "reads": {"BIRD-A": 36, "BIRD-AMB": 12, "CTL-B": 3}},
+    {"well_id": "E2", "role": "sample", "plot_id": "P2", "site": "P2-high", "sample_id": "E2",
+     "reads": {"BIRD-A": 120, "BIRD-AMB": 0, "CTL-B": 2}},
+    {"well_id": "EXB", "role": "extraction_blank", "reads": {"BIRD-A": 2, "BIRD-AMB": 0, "CTL-B": 0}},
+    {"well_id": "PCB", "role": "pcr_blank", "reads": {"BIRD-A": 3, "BIRD-AMB": 0, "CTL-B": 0}},
+    {"well_id": "CTL", "role": "positive_control", "reads": {"BIRD-A": 0, "BIRD-AMB": 0, "CTL-B": 100}}
+  ]
+}
