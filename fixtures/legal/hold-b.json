@@ -1,0 +1,8 @@
+{
+  "doc_type": "legal_hold",
+  "hold_id": "HOLD-B-001",
+  "source_ids": ["w1", "s1"],
+  "order_ref": "COURT-ORDER-2027-77",
+  "issued_by": "coastal-court",
+  "issued_at": "2027-02-01T09:00:00Z"
+}

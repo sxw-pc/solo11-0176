@@ -57,7 +57,7 @@ def test_storm_damage_reopens_acceptance(tmp_path):
 
 def test_public_cli(tmp_path):
     p=file(tmp_path,'base.json',baseline());db=tmp_path/'cli.sqlite'
-    out=subprocess.run([sys.executable,'-m','tidalrestore','baseline-import','--db',str(db),'--file',str(p)],capture_output=True,text=True)
+    out=subprocess.run([sys.executable,'-B','-m','tidalrestore','baseline-import','--db',str(db),'--file',str(p)],capture_output=True,text=True)
     assert out.returncode==0,out.stderr
     assert json.loads(out.stdout)['status']=='confirmed'
 
@@ -128,7 +128,7 @@ def test_late_independent_survey_retracts_earlier_acceptance(tmp_path):
 
 def test_public_demo_and_failure_fixtures(tmp_path):
     db=tmp_path/'demo.sqlite'
-    cli=lambda *args:subprocess.run([sys.executable,'-m','tidalrestore',*args,'--db',str(db)],capture_output=True,text=True)
+    cli=lambda *args:subprocess.run([sys.executable,'-B','-m','tidalrestore',*args,'--db',str(db)],capture_output=True,text=True)
     result=cli('demo');assert result.returncode==0,result.stderr
     assert json.loads(result.stdout)['acceptance'][0]['status']=='accepted'
     assert json.loads(cli('audit').stdout)['status']=='matched'
