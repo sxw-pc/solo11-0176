@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS survey(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFE
 CREATE TABLE IF NOT EXISTS acceptance(plot_id TEXT PRIMARY KEY,status TEXT NOT NULL,weighted_survival INTEGER NOT NULL,reason TEXT NOT NULL,version INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS acceptance_history(plot_id TEXT NOT NULL,version INTEGER NOT NULL,status TEXT NOT NULL,score INTEGER NOT NULL,reason TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(plot_id,version));
 CREATE TABLE IF NOT EXISTS decision_log(id INTEGER PRIMARY KEY,object_id TEXT NOT NULL,status TEXT NOT NULL,reason TEXT NOT NULL,evidence_id TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS debris_observation(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFERENCES plot(id),camera TEXT NOT NULL,observed_at TEXT NOT NULL,position_m INTEGER NOT NULL,shape TEXT NOT NULL,pieces INTEGER NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
 '''
 
 def connect(path):
@@ -44,4 +45,5 @@ def report(path):
           'work_cells':'SELECT * FROM work_cell ORDER BY id',
           'surveys':'SELECT * FROM survey ORDER BY id','acceptance':'SELECT * FROM acceptance ORDER BY plot_id',
           'acceptance_history':'SELECT * FROM acceptance_history ORDER BY plot_id,version',
-          'decisions':'SELECT * FROM decision_log ORDER BY id'}.items()}
+          'decisions':'SELECT * FROM decision_log ORDER BY id',
+          'debris':'SELECT * FROM debris_observation ORDER BY id'}.items()}
