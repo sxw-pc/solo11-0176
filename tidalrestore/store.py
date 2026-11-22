@@ -16,7 +16,13 @@ CREATE TABLE IF NOT EXISTS survey(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFE
 CREATE TABLE IF NOT EXISTS acceptance(plot_id TEXT PRIMARY KEY,status TEXT NOT NULL,weighted_survival INTEGER NOT NULL,reason TEXT NOT NULL,version INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS acceptance_history(plot_id TEXT NOT NULL,version INTEGER NOT NULL,status TEXT NOT NULL,score INTEGER NOT NULL,reason TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(plot_id,version));
 CREATE TABLE IF NOT EXISTS decision_log(id INTEGER PRIMARY KEY,object_id TEXT NOT NULL,status TEXT NOT NULL,reason TEXT NOT NULL,evidence_id TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS shore_profile(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFERENCES plot(id),captured_at TEXT NOT NULL,device TEXT NOT NULL,water_level_cm INTEGER NOT NULL,points_json TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS shore_profile(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFERENCES plot(id),captured_at TEXT NOT NULL,device TEXT NOT NULL,water_level_cm INTEGER NOT NULL,points_json TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),period TEXT,voyage TEXT,alongshore_m REAL,coverage_lo REAL,coverage_hi REAL,clock_error_s REAL,vertical_error_cm REAL,control_covariance_cm2 REAL);
+CREATE TABLE IF NOT EXISTS tide_record(id TEXT PRIMARY KEY,points_json TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS shore_budget(id TEXT PRIMARY KEY,tide_record_id TEXT NOT NULL,periods_json TEXT NOT NULL,status TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS budget_plot(budget_id TEXT NOT NULL,plot_id TEXT NOT NULL,change_lo REAL NOT NULL,change_hi REAL NOT NULL,transfer_lo REAL NOT NULL,transfer_hi REAL NOT NULL,unattributable_lo REAL NOT NULL,unattributable_hi REAL NOT NULL,fill_target_m3 REAL NOT NULL,purchase_lo REAL NOT NULL,purchase_hi REAL NOT NULL,PRIMARY KEY(budget_id,plot_id));
+CREATE TABLE IF NOT EXISTS budget_route(budget_id TEXT NOT NULL,route_id TEXT NOT NULL,target TEXT NOT NULL,claim_m3 REAL NOT NULL,status TEXT NOT NULL,proven_m3 REAL,scenario_json TEXT NOT NULL,PRIMARY KEY(budget_id,route_id));
+CREATE TABLE IF NOT EXISTS budget_layer(budget_id TEXT NOT NULL,layer TEXT NOT NULL,item TEXT NOT NULL,value_json TEXT NOT NULL,PRIMARY KEY(budget_id,layer,item));
+CREATE TABLE IF NOT EXISTS budget_resurvey(budget_id TEXT NOT NULL,plot_id TEXT NOT NULL,axis TEXT NOT NULL,segment_json TEXT NOT NULL,reason TEXT NOT NULL);
 '''
 
 def connect(path):
@@ -46,4 +52,10 @@ def report(path):
           'surveys':'SELECT * FROM survey ORDER BY id','acceptance':'SELECT * FROM acceptance ORDER BY plot_id',
           'acceptance_history':'SELECT * FROM acceptance_history ORDER BY plot_id,version',
           'decisions':'SELECT * FROM decision_log ORDER BY id',
-          'shore_profiles':'SELECT * FROM shore_profile ORDER BY id'}.items()}
+          'shore_profiles':'SELECT * FROM shore_profile ORDER BY id',
+          'tide_records':'SELECT * FROM tide_record ORDER BY id',
+          'shore_budgets':'SELECT * FROM shore_budget ORDER BY id',
+          'budget_plots':'SELECT * FROM budget_plot ORDER BY budget_id,plot_id',
+          'budget_routes':'SELECT * FROM budget_route ORDER BY budget_id,route_id',
+          'budget_layers':'SELECT * FROM budget_layer ORDER BY budget_id,layer,item',
+          'budget_resurvey':'SELECT * FROM budget_resurvey ORDER BY budget_id,plot_id,axis'}.items()}

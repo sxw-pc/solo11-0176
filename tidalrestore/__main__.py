@@ -6,10 +6,13 @@ from .survey import import_survey
 from .material import import_material
 from .store import report
 from .audit import audit
-from .shoreline import import_profile
+from .shoreline import import_profile,import_tide,import_bundle,import_budget,import_verification
 def main():
     p=argparse.ArgumentParser();s=p.add_subparsers(dest='cmd',required=True)
-    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey,'shore-profile-import':import_profile}
+    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,
+           'work-import':import_work,'survey-import':import_survey,'shore-profile-import':import_profile,
+           'tide-record-import':import_tide,'shore-bundle-import':import_bundle,
+           'shore-budget-import':import_budget,'shore-verification-import':import_verification}
     for name in funcs:
         x=s.add_parser(name);x.add_argument('--db',required=True);x.add_argument('--file',required=True)
     x=s.add_parser('report');x.add_argument('--db',required=True)
