@@ -7,6 +7,7 @@ from .works import import_contract,import_work
 from .survey import import_survey
 from .material import import_material
 from .carbon import import_flux
+from .methane import import_methane,import_methane_route
 
 def audit(path):
     with closing(connect(path)) as db:
@@ -16,8 +17,8 @@ def audit(path):
         replay=Path(folder)/'replay.sqlite'
         for i,event in enumerate(events):
             file=Path(folder)/f'{i}.json';file.write_bytes(event['raw'])
-            {'baseline':import_baseline,'material':import_material,'contract':import_contract,'work':import_work,'survey':import_survey,'flux':import_flux}[event['kind']](replay,file)
+            {'baseline':import_baseline,'material':import_material,'contract':import_contract,'work':import_work,'survey':import_survey,'flux':import_flux,'methane':import_methane,'methane_route':import_methane_route}[event['kind']](replay,file)
         rebuilt=report(replay)
-    keys=('plots','baseline','baseline_disputes','materials','contracts','works','work_cells','surveys','acceptance','acceptance_history','decisions','fluxes')
+    keys=('plots','baseline','baseline_disputes','materials','contracts','works','work_cells','surveys','acceptance','acceptance_history','decisions','fluxes','methane_campaigns','methane_samples','methane_assessments')
     return {'status':'matched' if all(original[k]==rebuilt[k] for k in keys) else 'divergent','event_count':len(events),
             'differences':[k for k in keys if original[k]!=rebuilt[k]]}

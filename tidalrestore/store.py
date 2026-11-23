@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS acceptance(plot_id TEXT PRIMARY KEY,status TEXT NOT N
 CREATE TABLE IF NOT EXISTS acceptance_history(plot_id TEXT NOT NULL,version INTEGER NOT NULL,status TEXT NOT NULL,score INTEGER NOT NULL,reason TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(plot_id,version));
 CREATE TABLE IF NOT EXISTS decision_log(id INTEGER PRIMARY KEY,object_id TEXT NOT NULL,status TEXT NOT NULL,reason TEXT NOT NULL,evidence_id TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS chamber_flux(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFERENCES plot(id),chamber_id TEXT NOT NULL,captured_at TEXT NOT NULL,tide TEXT NOT NULL,co2_mg INTEGER NOT NULL,ch4_mg INTEGER NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS methane_campaign(id TEXT PRIMARY KEY,plot_id TEXT NOT NULL REFERENCES plot(id),tide TEXT NOT NULL,lag_lo INTEGER NOT NULL,lag_hi INTEGER NOT NULL,calib_batch TEXT NOT NULL,drift_mg INTEGER NOT NULL,sed_iso TEXT NOT NULL,ext_iso TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
+CREATE TABLE IF NOT EXISTS methane_sample(campaign_id TEXT NOT NULL REFERENCES methane_campaign(id),id TEXT NOT NULL,role TEXT NOT NULL,chamber_id TEXT NOT NULL,phase TEXT NOT NULL,started_at TEXT NOT NULL,ended_at TEXT NOT NULL,calib_batch TEXT NOT NULL,ch4_mg INTEGER,iso TEXT,tol_mg INTEGER,source_id TEXT NOT NULL REFERENCES evidence(id),PRIMARY KEY(campaign_id,id));
+CREATE TABLE IF NOT EXISTS methane_assessment(campaign_id TEXT PRIMARY KEY REFERENCES methane_campaign(id),plot_id TEXT NOT NULL,status TEXT NOT NULL,local_lo TEXT NOT NULL,local_hi TEXT NOT NULL,dofs INTEGER NOT NULL,rank_deficient INTEGER NOT NULL,result TEXT NOT NULL,source_id TEXT NOT NULL REFERENCES evidence(id));
 '''
 
 def connect(path):
@@ -46,4 +49,7 @@ def report(path):
           'surveys':'SELECT * FROM survey ORDER BY id','acceptance':'SELECT * FROM acceptance ORDER BY plot_id',
           'acceptance_history':'SELECT * FROM acceptance_history ORDER BY plot_id,version',
           'decisions':'SELECT * FROM decision_log ORDER BY id',
-          'fluxes':'SELECT * FROM chamber_flux ORDER BY id'}.items()}
+          'fluxes':'SELECT * FROM chamber_flux ORDER BY id',
+          'methane_campaigns':'SELECT * FROM methane_campaign ORDER BY id',
+          'methane_samples':'SELECT * FROM methane_sample ORDER BY id',
+          'methane_assessments':'SELECT * FROM methane_assessment ORDER BY campaign_id'}.items()}

@@ -1,0 +1,7 @@
+{"id":"mx1","kind":"methane","campaign_id":"MX1","plot_id":"P1","tide":"mid","lag_window_minutes":[30,60],
+ "calibration":{"batch_id":"CAL-7","shared_drift_mg":3},
+ "endmembers":{"sediment":{"iso":[6,6]},"external":{"iso":[6,6]}},
+ "samples":[
+  {"id":"s-ch1","role":"chamber","chamber_id":"ch-1","phase":"mid","started_at":"2026-04-03T11:00:00Z","ended_at":"2026-04-03T12:30:00Z","calib_batch":"CAL-7","ch4_mg":18,"iso":[6,6]},
+  {"id":"s-ch2","role":"chamber","chamber_id":"ch-2","phase":"mid","started_at":"2026-04-03T11:00:00Z","ended_at":"2026-04-03T12:30:00Z","calib_batch":"CAL-7","ch4_mg":20,"iso":[6,6]},
+  {"id":"s-up1","role":"upstream","chamber_id":"up-1","phase":"mid","started_at":"2026-04-03T10:30:00Z","ended_at":"2026-04-03T11:30:00Z","calib_batch":"CAL-7","ch4_mg":12,"iso":[6,6]}]}

@@ -7,9 +7,10 @@ from .material import import_material
 from .store import report
 from .audit import audit
 from .carbon import import_flux
+from .methane import import_methane,import_methane_route
 def main():
     p=argparse.ArgumentParser();s=p.add_subparsers(dest='cmd',required=True)
-    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey,'flux-import':import_flux}
+    funcs={'baseline-import':import_baseline,'material-import':import_material,'contract-import':import_contract,'work-import':import_work,'survey-import':import_survey,'flux-import':import_flux,'methane-import':import_methane,'methane-route-import':import_methane_route}
     for name in funcs:
         x=s.add_parser(name);x.add_argument('--db',required=True);x.add_argument('--file',required=True)
     x=s.add_parser('report');x.add_argument('--db',required=True)
