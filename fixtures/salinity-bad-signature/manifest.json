@@ -1,0 +1,29 @@
+{
+  "kind": "salinity_logger_manifest",
+  "manifest_id": "logger-SIG",
+  "revision": 1,
+  "device_id": "device-7",
+  "seq_start": 1,
+  "seq_end": 99,
+  "pieces": [
+    {
+      "piece_index": 1,
+      "sha": "150c7316f24f1d0c344d25fb1e348acc508c7e88370e4670946ef2f522d9ad04"
+    },
+    {
+      "piece_index": 2,
+      "sha": "9212df0094fcf1d75f61c0cd00fee92d13d60fcec7ad7e2788b1eaca32711a6a"
+    },
+    {
+      "piece_index": 3,
+      "sha": "00e66fd1a27900dfb6dac42dc871f945c7eca7f92cbc73f8bee7cb3b9f2c6d30"
+    }
+  ],
+  "total_sha": "db5f944fa2f411fb4fd755b6834a4e2bfdaf2dee2ec14986e8edb308971b5b5c",
+  "calibration": {
+    "piece_index": 2,
+    "from": "2026-04-03T08:00:00Z",
+    "to": "2026-04-03T08:10:00Z"
+  },
+  "signature": "527d2bfbb7dcb9480c54be182519a1aedf56b7727bd717a9609f79dc62bd022f605fe1e0026c00be145117e6304f5ea54c73ebb36e8070f174f25104f942841202769093291672d686e6c4d8b507bd6184cbcd65e4bdd47615a8eecd785227e33d6deed06213f431f320ed59f0a80edf344395f60989720637ef030b10496c40dc16ccda0f865bfe56bf863f0acf381b6281ad48d43881ab54480a9400fe27311d64c3e021c3763eae29c0200dc73b8c7a03844f038282a692e490e87d98ad69fdde7ed21f1947b2c5313f59bb039107c332dc27fdca60000ce9928e4e3f8f030624186432c9156e60f8f0b24633b95c8bbc927794efb4c56314d2adc47c482d"
+}

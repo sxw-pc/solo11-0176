@@ -1,0 +1,30 @@
+{
+  "kind": "salinity_logger_manifest",
+  "manifest_id": "logger-B",
+  "revision": 2,
+  "device_id": "device-9",
+  "seq_start": 1,
+  "seq_end": 1,
+  "pieces": [
+    {
+      "piece_index": 1,
+      "sha": "e5ee05c3689be81fe84f8c95d1828e7c5516ceb15443f4ecacd2be4713ba500b"
+    },
+    {
+      "piece_index": 2,
+      "sha": "7e5027e1ca8704e9b7116a2f2929db1237b6b477ca43304aa5467f5b36c76b33"
+    }
+  ],
+  "total_sha": "ded4eede491264bb7b25549950600234983b6e6026ed51a472d992720f577a1b",
+  "calibration": {
+    "piece_index": 2,
+    "from": "2026-04-03T08:00:00Z",
+    "to": "2026-04-03T08:10:00Z"
+  },
+  "supersedes": "logger-B@1",
+  "supersedes_sha": "71a3ca63588c0e14310e56ceed6d3573aed47fe35817b37ad4c2eec76a71f50b",
+  "revocation": {
+    "signature": "c997b6ce6831e383254de0e77c7e6facd4588d4a82a5b82af5108c3507e8eda86b395db863cfb32847735bea8cf51c5243ced4ff00753688d0264fe0f63ba4b278d28eb026f3cd4620995e0f77696103e362de45221784fd4a9ebca406444495815c56bab3b8fd1d0625fb162912e846a054c6b0cc59423853053ccbf468b26ae6bf4b3a20dc0ea46e6751c5e35b3787fa0bd0535165026764deecff1a6f8e0ab05c5eb960f3b632aa6ad3520b9e1d6be534974ad9aac5439cd58dba0c956dd9fec7fbf30ff35dabd21b019c42a9c4b3f5452b701200e8c80978b326016fd5df61b2b45e188b01b9b89af4fc12dd21c1d59d46e720eccaf543d425cb6f95dd9a"
+  },
+  "signature": "02ed37616cd54603d0edbf09556c2fc09052ea15cc7eaa059edb31926cc1f69d4d573ac9e303fd01eb5b9d0f5dac2c4df8cf6bac1c15e993f25ebc311c31ac0cdbef360a203e27a66ae8a0f0fcd3446e886f0a9439cc81fdaf0d774ff37a189edaf9e3f669646735137f10d16bc5360afc1d711782801e0e63ef025fc4143b6ab3b3fb95e7214c98f2444da296bc018537e9b5a261bff466882dce717f741799c680af51e83c2e15301b4c8ed03d47a6a6c95719691d25fe7694172b29965ae20ccd9c1dd41e4197cfe67bf489402ea26685dc616d65fdd1e9632d1eeb5e55e18cfcddfac11061cd0391bebd682b3cc897f4294291647f95ada994b2af25aab8"
+}

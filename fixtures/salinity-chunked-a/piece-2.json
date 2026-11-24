@@ -1,0 +1,14 @@
+{
+  "kind": "salinity_piece",
+  "manifest_id": "logger-A",
+  "revision": 1,
+  "piece_index": 2,
+  "device_id": "device-7",
+  "samples": [],
+  "calibration": {
+    "piece_index": 2,
+    "from": "2026-04-03T08:00:00Z",
+    "to": "2026-04-03T08:10:00Z"
+  },
+  "signature": "a88f41c50e3b86f008616495e6ec48131f94c5a9ad83212b228046d1f60ec0c5f84ac9cd669fa40a851ba17b00b0acabc74e5416496b9466568827191e3744ba52079c4a90b04970b81b56c6fb1966cad57b385e5e740affbc6ad8ef4aa14853fc45402db2ea2da460cbbad939a79947499eb20535db74ce497c514c88474621cccdf8c58657181065cacc993737e0c1354e1beff1137bea029e65146e59712cab747cc4b8aa4c57aa32eb62a5882d5de5aa9ffaa1293bd5fb698783c8ef73a8db7cf5214dab4d0fd1b03a9d76abc98eb8935d83a09a598f1e21efba26e59eef9bb52d0a14d30a1f2a08a8ee79bde7aec4d5980115109afdd7e21142320a6754"
+}

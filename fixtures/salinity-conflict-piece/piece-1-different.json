@@ -1,0 +1,16 @@
+{
+  "kind": "salinity_piece",
+  "manifest_id": "logger-A",
+  "revision": 1,
+  "piece_index": 1,
+  "device_id": "device-7",
+  "samples": [
+    {
+      "station": "S1",
+      "at": "2026-04-03T08:00:00Z",
+      "conductivity": 70,
+      "tide": "flood"
+    }
+  ],
+  "signature": "d0ec2e8b4b50180c14ddc8bfa920e212a786530742d7a1c83a8a493e2bfbb2d63591e7df3f8cb3d471c6197a6e60fd12f90a60ea85dba8ada3ce31a78a99dcde7e96ab489315bd658b57593d3b9ba660962c7cc51ee082db3e9ce9584ebce05e3e50550d49b93914015ead51c48cc2031bc65b278327999e0f0ae6dc7b925adf60d946d3ebd8841578ad604e04965588ee96960fdb63fe5ed1bb7c33ac17dff895168a647c64d5122065f7a1c6c3269b71d67143b0b0df4bf33d1aa218c56113cfadae4dddaa11c56c4d8cae79fd8c405a7cb56ed7e6fa68684b7b55a3fa8bcf414836abed5b1125e83d484bce66e4be7318bf600e054f9b3b167143169c8ab4"
+}

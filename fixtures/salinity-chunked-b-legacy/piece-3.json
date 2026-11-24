@@ -1,0 +1,16 @@
+{
+  "kind": "salinity_piece",
+  "manifest_id": "logger-B",
+  "revision": 1,
+  "piece_index": 3,
+  "device_id": "device-7",
+  "samples": [
+    {
+      "station": "S1",
+      "at": "2026-04-03T08:05:00Z",
+      "conductivity": 120,
+      "tide": "ebb"
+    }
+  ],
+  "signature": "44d8dd35f13e2a9adb3bbc0d828ee0c1862cdb7533f1f3336e35c67408fa0da8fbf1fdbfd886d7bb7a6dcc13f29f6c85f9c9bf855ca0a05e9c40ded6536f338c26da7078d12172a8d9073f44d1f599e7b6fe8c08f18438584152103e4a34dfff70de26886d7a1b2cc1d0660096c58bb501105897c46b0d9512c9bb2e446bddd245b18001ed6471cadacb43688fb488afa5a7ba28f1236226abc3372de67aafbeea823c2c0a6b3152339d6a33bcfac3e7b958b2593c0f915d70b48d3c998afb7f2b11a865ec8470893e8dbc2b2c0a45c558ce43d4b74f6317cba922e18e06067692e8bc8aeabf1151b6e5597c7c66cdc393b210115b57aeaa3144484bc4c7779e"
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "salinity_piece",
+  "manifest_id": "logger-CAL",
+  "revision": 1,
+  "piece_index": 2,
+  "device_id": "device-7",
+  "samples": [],
+  "calibration": {
+    "piece_index": 2,
+    "from": "2026-04-03T09:00:00Z",
+    "to": "2026-04-03T09:10:00Z"
+  },
+  "signature": "057fe5947f705bcf35fa1ee5438f3f444d875718e6d6d13a162c77c2ece4994fd27095d949de7f7fea6e4dbec2df760b6f3fad994d6e3242a0ae6dcb9a41e579a31fc9ec644a00b520b4d9d45fc5082eaaf708118f241012ca4933877df2a6c2d43ff4a66dee9cb7eb799bb4ef45063700e160f3a9523710761bfaaab02372f838334dccb3f1c460d405af70ef94ff7b599c732b44ab253c717981a0ae9cc24f24670a7438c46cd237d6c2d05859b41c175765eaa427f8310cd96deb6cbf089e8e3b69dcd5bc6b72c108e0a67bc582f2a54b9b99e227410306c93ccadd4904ff4b0465c6d86cccc317ac223d41d6d6241b36893e426701c7603ac48831c97667"
+}

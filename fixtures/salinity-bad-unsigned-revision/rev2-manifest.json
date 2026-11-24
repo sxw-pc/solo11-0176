@@ -1,0 +1,18 @@
+{
+  "kind": "salinity_logger_manifest",
+  "manifest_id": "logger-U",
+  "revision": 2,
+  "device_id": "device-9",
+  "seq_start": 1,
+  "seq_end": 1,
+  "pieces": [
+    {
+      "piece_index": 1,
+      "sha": "b05c3f34cfcc708ff75ddf158a0edd9fbe8aa56d338c69701210db361a2894d2"
+    }
+  ],
+  "total_sha": "7e7b68b4a1ff19119d0aac3dc1916d5d72b9ef1cd299bf5e06ca843bae22e3c8",
+  "supersedes": "logger-U@1",
+  "supersedes_sha": "c943a44494e10ed5a20db47bceebddc234ef29b677c2a60cc0bd3212a68be64b",
+  "signature": "6c393e840d2a0a5be30de60bbd7ec126cbf5f81c7669bc3715d48e4f5bc9a00a2da5d7fc1f9bac916e3c54ab0f5a0ed9d37e401fd673de6bce54b1e011f2600f77c3dafcc70959dff105bd67a4adbb1cde325e7e68781d641d5c7a4ab4636ea609d7bf1e4d671b40f2065bea7eeaf618b237388aef793c16171cfe38ed84cd6d662699489129eddf6de873ca6ed241b35b8fefff9df27199fd243ab99231dae2a395a7d5dcfc6a9d2baa8f85306203ab2a8d0d7cd5c47210c3e0c51660e469c72f40894556ebd8e1be84ae69515cac2b232715c958d3a245bdbf46a597c67128fa7b7e117ed57b79c8203ca9aaafe1d098838ecf9a7a10c7e39d373eae860f2a"
+}

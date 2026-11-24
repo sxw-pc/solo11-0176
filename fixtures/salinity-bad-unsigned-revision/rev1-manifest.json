@@ -1,0 +1,16 @@
+{
+  "kind": "salinity_logger_manifest",
+  "manifest_id": "logger-U",
+  "revision": 1,
+  "device_id": "device-9",
+  "seq_start": 1,
+  "seq_end": 1,
+  "pieces": [
+    {
+      "piece_index": 1,
+      "sha": "ec94df01be20d04f5c471755ba50f08055ef214c42bbcaa3cac139179c1bd007"
+    }
+  ],
+  "total_sha": "90fdccef4e40a89d97ed3154ff049ce5194c8c43bccb6742efe237cf5785cbec",
+  "signature": "3cfb14ccf8a72a0d694a9bde9944488e84c687a699d7ba1453a4f25a92bc3934e38d5c786a8c95548b0d93aac925f833487f20f95cb55eb0149d4cc80b9e4f14e3d6baa316415771fb976783477aacfad68aba097b91147e697d07d08cae7c4090160a0654556f636aa7cf318072e12d9ba27bc939ea53370e8c7417bbd4b787f963bcc2407b54449e810ec0cee48f8f756887db5200ec824a747c2a643ffede96aaa1bc6672edf4ffdc7d40579bba92f6d65e3d5e04989cc5c3cced2cbbc9f9c25ecc435a50e6c3654a14ae48e2f66b53db32129a6e57bd9b6df2b9ff589b8a28543110da12619747145c0ffb64f3df4ef9044dd537f405be9529feac9aab5c"
+}
